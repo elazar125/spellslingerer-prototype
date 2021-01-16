@@ -24,8 +24,8 @@ func SetupRouter() *gin.Engine {
 		auth := v1.Group("/").Use(auth.EnsureAuthorized())
 		{
 			// account handling, see account.go
-			auth.GET("my-data", controllers.MyData)
-			auth.DELETE("my-data", controllers.DeleteMyData)
+			auth.GET("profile", controllers.GetProfile)
+			auth.DELETE("profile", controllers.DeleteProfile)
 		}
 	}
 

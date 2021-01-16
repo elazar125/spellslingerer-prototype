@@ -3,6 +3,8 @@ package models
 import (
 	"api/db"
 
+	"encoding/json"
+
 	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
 )
@@ -13,6 +15,45 @@ type User struct {
 	Name     string `json:"name" binding:"required" gorm:"unique"`
 	Email    string `json:"email" binding:"required,email" gorm:"unique"`
 	Password string `json:"password" binding:"required"`
+}
+
+type userMarshalJSON struct {
+	gorm.Model
+	Name  string `json:"name"`
+	Email string `json:"email"`
+}
+
+type userUnmarshalJSON struct {
+	gorm.Model
+	Name     string `json:"name" binding:"required"`
+	Email    string `json:"email" binding:"required,email"`
+	Password string `json:"password" binding:"required"`
+}
+
+// MarshalJSON overrides the default JSON marshaling to clear out the password prior to sending data
+func (user User) MarshalJSON() ([]byte, error) {
+	sanitized := userMarshalJSON{
+		user.Model,
+		user.Name,
+		user.Email,
+	}
+	return json.Marshal(&sanitized)
+}
+
+// UnmarshalJSON overrides the default JSON unmarshaling to hash the password immediately before doing anything else with the data
+func (user *User) UnmarshalJSON(bytes []byte) error {
+	var unmarshal userUnmarshalJSON
+
+	if err := json.Unmarshal(bytes, &unmarshal); err != nil {
+		return err
+	}
+
+	user.Model = unmarshal.Model
+	user.Name = unmarshal.Name
+	user.Email = unmarshal.Email
+	user.Password = unmarshal.Password
+
+	return user.HashPassword(user.Password)
 }
 
 // CreateUserRecord creates a user record in the database

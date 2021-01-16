@@ -18,22 +18,19 @@ func Signup(c *gin.Context) {
 		return
 	}
 
-	if hasDuplicate, err := user.HasDuplicate(); hasDuplicate || err != nil {
+	if hasDuplicate, err := user.HasDuplicate(); hasDuplicate {
 		rest.BadRequest(c, err, "user already exists")
 		return
-	}
-
-	if err := user.HashPassword(user.Password); err != nil {
-		rest.ServerError(c, err, "error hashing password")
+	} else if err != nil {
+		rest.ServerError(c, err, "error creating user")
 		return
 	}
 
 	if err := user.CreateUserRecord(); err != nil {
 		rest.ServerError(c, err, "error creating user")
-		return
+	} else {
+		rest.Ok(c, user)
 	}
-
-	rest.Ok(c, user)
 }
 
 // LoginPayload login body
@@ -72,32 +69,23 @@ func Login(c *gin.Context) {
 	}
 }
 
-// MyData logs users in
-func MyData(c *gin.Context) {
+// GetProfile logs users in
+func GetProfile(c *gin.Context) {
 	var user models.User
 
-	if err := user.LookupByEmail(c.GetString("email")); err == gorm.ErrRecordNotFound {
-		rest.Unauthorized(c, err, "invalid user credentials")
-		return
-	} else if err != nil {
+	if err := user.LookupByEmail(c.GetString("email")); err != nil {
 		rest.ServerError(c, err, "could not get user profile")
-		return
+	} else {
+		rest.Ok(c, user)
 	}
-
-	user.Password = ""
-
-	rest.Ok(c, user)
 }
 
-// DeleteMyData logs users in
-func DeleteMyData(c *gin.Context) {
+// DeleteProfile logs users in
+func DeleteProfile(c *gin.Context) {
 	var user models.User
 
-	if err := user.LookupByEmail(c.GetString("email")); err == gorm.ErrRecordNotFound {
-		rest.Unauthorized(c, err, "invalid user credentials")
-		return
-	} else if err != nil {
-		rest.ServerError(c, err, "could not get user profile")
+	if err := user.LookupByEmail(c.GetString("email")); err != nil {
+		rest.Unauthorized(c, err, "could not get user profile")
 		return
 	}
 

@@ -2,6 +2,7 @@ package models
 
 import (
 	"api/db"
+	"encoding/json"
 
 	"gorm.io/gorm"
 
@@ -24,19 +25,69 @@ func setupDatabase(t *testing.T) error {
 	return err
 }
 
-func InsertUserInDatabase(t *testing.T, user User) func(t *testing.T) {
+func insertUserInDatabase(t *testing.T, user User) func(t *testing.T) {
 	t.Log("inserting user to database")
 
-	err := user.HashPassword(user.Password)
-	assert.NoError(t, err)
-
-	err = user.CreateUserRecord()
+	err := user.CreateUserRecord()
 	assert.NoError(t, err)
 
 	return func(t *testing.T) {
 		user.DeleteUserRecord()
 		t.Log("user \"Test User\" deleted from database")
 	}
+}
+
+func TestMarshalJSON(t *testing.T) {
+	user := User{
+		Name:     "Test User",
+		Email:    "test@email.com",
+		Password: "secret",
+	}
+
+	expected := userMarshalJSON{
+		user.Model,
+		user.Name,
+		user.Email,
+		// Note Password is not included
+	}
+
+	testBytes, err := json.Marshal(user)
+	assert.NoError(t, err)
+
+	compareBytes, err := json.Marshal(expected)
+	assert.NoError(t, err)
+	assert.Equal(t, compareBytes, testBytes)
+}
+
+func TestUnmarshalJSON(t *testing.T) {
+	var testUser User
+
+	user := User{
+		Name:     "Test User",
+		Email:    "test@email.com",
+		Password: "secret",
+	}
+
+	toMarshal := userUnmarshalJSON{
+		user.Model,
+		user.Name,
+		user.Email,
+		user.Password,
+	}
+
+	// Marshal a copy to avoid the password being stripped out
+	testBytes, err := json.Marshal(toMarshal)
+	assert.NoError(t, err)
+
+	err = json.Unmarshal(testBytes, &testUser)
+	assert.NoError(t, err)
+
+	assert.Equal(t, user.Model, testUser.Model)
+	assert.Equal(t, user.Name, testUser.Name)
+	assert.Equal(t, user.Email, testUser.Email)
+	assert.NotEqual(t, user.Password, testUser.Password)
+	err = testUser.CheckPassword(user.Password)
+	assert.NoError(t, err)
 }
 
 func TestHashPassword(t *testing.T) {
@@ -59,9 +110,6 @@ func TestCreateUserRecord(t *testing.T) {
 	}
 
 	err := setupDatabase(t)
-	assert.NoError(t, err)
-
-	err = user.HashPassword(user.Password)
 	assert.NoError(t, err)
 
 	err = user.CreateUserRecord()
@@ -88,9 +136,6 @@ func TestDeleteUserRecord(t *testing.T) {
 	}
 
 	err := setupDatabase(t)
-	assert.NoError(t, err)
-
-	err = user.HashPassword(user.Password)
 	assert.NoError(t, err)
 
 	err = user.CreateUserRecord()
@@ -134,7 +179,7 @@ func TestLookupByEmail(t *testing.T) {
 	err := setupDatabase(t)
 	assert.NoError(t, err)
 
-	teardown := InsertUserInDatabase(t, user)
+	teardown := insertUserInDatabase(t, user)
 	defer teardown(t)
 
 	userResult.LookupByEmail(user.Email)
@@ -157,7 +202,7 @@ func TestHasDuplicate(t *testing.T) {
 	assert.NoError(t, err)
 	assert.False(t, hasDuplicate)
 
-	teardown := InsertUserInDatabase(t, user)
+	teardown := insertUserInDatabase(t, user)
 	defer teardown(t)
 
 	hasDuplicate, err = user.HasDuplicate()
