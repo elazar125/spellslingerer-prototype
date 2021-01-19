@@ -2,13 +2,12 @@ package models
 
 import (
 	"api/db"
+
 	"encoding/json"
-
-	"gorm.io/gorm"
-
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"gorm.io/gorm"
 )
 
 func setupDatabase(t *testing.T) error {
@@ -95,7 +94,7 @@ func TestHashPassword(t *testing.T) {
 		Password: "secret",
 	}
 
-	err := user.HashPassword(user.Password)
+	err := user.hashPassword(user.Password)
 	assert.NoError(t, err)
 	assert.NotEqual(t, "secret", user.Password)
 }
@@ -152,12 +151,49 @@ func TestDeleteUserRecord(t *testing.T) {
 	assert.Equal(t, result.Error, gorm.ErrRecordNotFound)
 }
 
+func TestUpdateUserRecord(t *testing.T) {
+	var userResult User
+
+	user := User{
+		Name:     "Test User",
+		Email:    "test@email.com",
+		Password: "secret",
+	}
+
+	err := setupDatabase(t)
+	assert.NoError(t, err)
+
+	err = user.CreateUserRecord()
+	assert.NoError(t, err)
+
+	newUser := User{
+		Name:     "New Name",
+		Email:    "new@email.com",
+		Password: "new secret",
+	}
+
+	err = user.UpdateUserRecord(newUser)
+	assert.NoError(t, err)
+	assert.Equal(t, newUser.Name, user.Name)
+	assert.Equal(t, newUser.Email, user.Email)
+	assert.Equal(t, newUser.Password, user.Password)
+
+	err = userResult.LookupByEmail(newUser.Email)
+	assert.NoError(t, err)
+	assert.Equal(t, newUser.Name, userResult.Name)
+	assert.Equal(t, newUser.Email, userResult.Email)
+	assert.Equal(t, newUser.Password, userResult.Password)
+
+	err = user.DeleteUserRecord()
+	assert.NoError(t, err)
+}
+
 func TestCheckPassword(t *testing.T) {
 	user := User{
 		Password: "secret",
 	}
 
-	err := user.HashPassword(user.Password)
+	err := user.hashPassword(user.Password)
 	assert.NoError(t, err)
 
 	err = user.CheckPassword("secret")

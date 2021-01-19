@@ -53,7 +53,19 @@ func (user *User) UnmarshalJSON(bytes []byte) error {
 	user.Email = unmarshal.Email
 	user.Password = unmarshal.Password
 
-	return user.HashPassword(user.Password)
+	return user.hashPassword(user.Password)
+}
+
+// hashPassword encrypts user password
+func (user *User) hashPassword(password string) error {
+	bytes, err := bcrypt.GenerateFromPassword([]byte(password), 14)
+	if err != nil {
+		return err
+	}
+
+	user.Password = string(bytes)
+
+	return nil
 }
 
 // CreateUserRecord creates a user record in the database
@@ -68,16 +80,14 @@ func (user *User) DeleteUserRecord() error {
 	return result.Error
 }
 
-// HashPassword encrypts user password
-func (user *User) HashPassword(password string) error {
-	bytes, err := bcrypt.GenerateFromPassword([]byte(password), 14)
-	if err != nil {
-		return err
-	}
+// UpdateUserRecord deletes a user record in the database
+func (user *User) UpdateUserRecord(newData User) error {
+	user.Name = newData.Name
+	user.Email = newData.Email
+	user.Password = newData.Password
 
-	user.Password = string(bytes)
-
-	return nil
+	result := db.GlobalDB.Save(&user)
+	return result.Error
 }
 
 // CheckPassword checks user password

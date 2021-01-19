@@ -24,7 +24,9 @@ func SetupRouter() *gin.Engine {
 		auth := v1.Group("/").Use(auth.EnsureAuthorized())
 		{
 			// account handling, see account.go
+			auth.POST("logout", controllers.Logout)
 			auth.GET("profile", controllers.GetProfile)
+			auth.PUT("profile", controllers.EditProfile)
 			auth.DELETE("profile", controllers.DeleteProfile)
 		}
 	}

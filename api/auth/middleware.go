@@ -3,25 +3,21 @@ package auth
 import (
 	"api/rest"
 
-	"strings"
-
 	"github.com/gin-gonic/gin"
 )
 
 // EnsureAuthorized validates token and authorizes users
 func EnsureAuthorized() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		bearerToken := c.Request.Header.Get("Authorization")
-		token := strings.TrimPrefix(bearerToken, "Bearer ")
-		claims, err := ValidateJwtToken(token)
+		authHeader := c.Request.Header.Get("Authorization")
 
-		if err != nil {
+		if token, err := GetJwtTokenFromAuthHeader(authHeader); err != nil {
 			rest.Forbidden(c, err, err.Error())
-			return
+		} else if claims, err := token.validate(); err != nil {
+			rest.Forbidden(c, err, err.Error())
+		} else {
+			c.Set("email", claims.Email)
+			c.Next()
 		}
-
-		c.Set("email", claims.Email)
-
-		c.Next()
 	}
 }

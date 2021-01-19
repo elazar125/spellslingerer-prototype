@@ -69,6 +69,19 @@ func Login(c *gin.Context) {
 	}
 }
 
+// Logout logs users out
+func Logout(c *gin.Context) {
+	authHeader := c.Request.Header.Get("Authorization")
+
+	if token, err := auth.GetJwtTokenFromAuthHeader(authHeader); err != nil {
+		rest.ServerError(c, err, "could not log out")
+	} else if err := token.Blacklist(); err != nil {
+		rest.ServerError(c, err, "could not log out")
+	} else {
+		rest.Ok(c, nil)
+	}
+}
+
 // GetProfile logs users in
 func GetProfile(c *gin.Context) {
 	var user models.User
@@ -77,6 +90,43 @@ func GetProfile(c *gin.Context) {
 		rest.ServerError(c, err, "could not get user profile")
 	} else {
 		rest.Ok(c, user)
+	}
+}
+
+// EditProfile allows already authenticated users to update their name/email/password.
+// Returns a new JWT token with te new email claim.
+func EditProfile(c *gin.Context) {
+	var user models.User
+	var newUser models.User
+
+	if err := c.ShouldBindJSON(&newUser); err != nil {
+		rest.BadRequest(c, err, "invalid json")
+		return
+	}
+
+	if err := user.LookupByEmail(c.GetString("email")); err != nil {
+		rest.ServerError(c, err, "could not get user profile")
+		return
+	}
+
+	if err := user.UpdateUserRecord(newUser); err != nil {
+		rest.ServerError(c, err, "error updating user")
+		return
+	}
+
+	authHeader := c.Request.Header.Get("Authorization")
+	if token, err := auth.GetJwtTokenFromAuthHeader(authHeader); err != nil {
+		rest.ServerError(c, err, "could not log out")
+		return
+	} else if err := token.Blacklist(); err != nil {
+		rest.ServerError(c, err, "could not log out")
+		return
+	}
+
+	if signedToken, err := auth.GenerateJwtToken(user.Email); err != nil {
+		rest.ServerError(c, err, "error signing token")
+	} else {
+		rest.Ok(c, signedToken)
 	}
 }
 
