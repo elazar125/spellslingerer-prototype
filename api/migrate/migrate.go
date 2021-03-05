@@ -1,4 +1,4 @@
-package main
+package migrate
 
 import (
 	"api/auth"
@@ -6,12 +6,13 @@ import (
 	"api/models"
 )
 
-func setupAndMigrateDatabase() error {
+// SetupAndMigrateDatabase initializes the database and runs all migrations needed
+func SetupAndMigrateDatabase() error {
 	if err := db.InitDatabase(); err != nil {
 		return err
 	}
 
-	if err := db.GlobalDB.AutoMigrate(&models.User{}); err != nil {
+	if err := models.AutoMigrateModels(); err != nil {
 		return err
 	}
 	if err := db.GlobalDB.AutoMigrate(&auth.SignedToken{}); err != nil {

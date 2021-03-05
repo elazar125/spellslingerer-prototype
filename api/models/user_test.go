@@ -10,20 +10,6 @@ import (
 	"gorm.io/gorm"
 )
 
-func setupDatabase(t *testing.T) error {
-	t.Log("setup database")
-
-	err := db.InitDatabase()
-	if err != nil {
-		t.Error(err)
-	}
-
-	err = db.GlobalDB.AutoMigrate(&User{})
-	assert.NoError(t, err)
-
-	return err
-}
-
 func insertUserInDatabase(t *testing.T, user User) func(t *testing.T) {
 	t.Log("inserting user to database")
 
@@ -108,7 +94,7 @@ func TestCreateUserRecord(t *testing.T) {
 		Password: "secret",
 	}
 
-	err := setupDatabase(t)
+	err := SetupDatabase(t)
 	assert.NoError(t, err)
 
 	err = user.CreateUserRecord()
@@ -134,7 +120,7 @@ func TestDeleteUserRecord(t *testing.T) {
 		Password: "secret",
 	}
 
-	err := setupDatabase(t)
+	err := SetupDatabase(t)
 	assert.NoError(t, err)
 
 	err = user.CreateUserRecord()
@@ -148,7 +134,7 @@ func TestDeleteUserRecord(t *testing.T) {
 
 	result = db.GlobalDB.Where("email = ?", user.Email).First(&secondUserResult)
 	assert.Error(t, result.Error)
-	assert.Equal(t, result.Error, gorm.ErrRecordNotFound)
+	assert.Equal(t, gorm.ErrRecordNotFound, result.Error)
 }
 
 func TestUpdateUserRecord(t *testing.T) {
@@ -160,7 +146,7 @@ func TestUpdateUserRecord(t *testing.T) {
 		Password: "secret",
 	}
 
-	err := setupDatabase(t)
+	err := SetupDatabase(t)
 	assert.NoError(t, err)
 
 	err = user.CreateUserRecord()
@@ -212,7 +198,7 @@ func TestLookupByEmail(t *testing.T) {
 		Password: "secret",
 	}
 
-	err := setupDatabase(t)
+	err := SetupDatabase(t)
 	assert.NoError(t, err)
 
 	teardown := insertUserInDatabase(t, user)
@@ -231,7 +217,7 @@ func TestHasDuplicate(t *testing.T) {
 		Password: "secret",
 	}
 
-	err := setupDatabase(t)
+	err := SetupDatabase(t)
 	assert.NoError(t, err)
 
 	hasDuplicate, err := user.HasDuplicate()

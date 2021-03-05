@@ -1,4 +1,4 @@
-package main
+package migrate
 
 import (
 	"testing"
@@ -7,6 +7,6 @@ import (
 )
 
 func TestSetupAndMigrateDatabaseDB(t *testing.T) {
-	err := setupAndMigrateDatabase()
+	err := SetupAndMigrateDatabase()
 	assert.NoError(t, err)
 }

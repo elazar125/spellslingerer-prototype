@@ -1,6 +1,7 @@
 package main
 
 import (
+	"api/migrate"
 	"api/router"
 
 	"log"
@@ -8,7 +9,7 @@ import (
 )
 
 func main() {
-	if err := setupAndMigrateDatabase(); err != nil {
+	if err := migrate.SetupAndMigrateDatabase(); err != nil {
 		log.Fatalln(err)
 	}
 
