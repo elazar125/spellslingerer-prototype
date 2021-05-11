@@ -1,0 +1,97 @@
+{
+  "MP": {
+    "id": "MP",
+    "image": "Materials/MoxPearl.png",
+    "name": "Mox Pearl"
+  },
+  "MS": {
+    "id": "MS",
+    "image": "Materials/MoxSapphire.png",
+    "name": "Mox Sapphire"
+  },
+  "MJ": {
+    "id": "MJ",
+    "image": "Materials/MoxJet.png",
+    "name": "Mox Jet"
+  },
+  "MR": {
+    "id": "MR",
+    "image": "Materials/MoxRuby.png",
+    "name": "Mox Ruby"
+  },
+  "ME": {
+    "id": "ME",
+    "image": "Materials/MoxEmerald.png",
+    "name": "Mox Emerald"
+  },
+  "MD": {
+    "id": "MD",
+    "image": "Materials/MoxDiamond.png",
+    "name": "Mox Diamond"
+  },
+  "AF": {
+    "id": "AF",
+    "image": "Materials/ArchonFeather.png",
+    "name": "Archon Feather"
+  },
+  "DH": {
+    "id": "DH",
+    "image": "Materials/DemonHorn.png",
+    "name": "Demon Horn"
+  },
+  "DI": {
+    "id": "DI",
+    "image": "Materials/DarksteelIngot.png",
+    "name": "Darksteel Ingot"
+  },
+  "DS": {
+    "id": "DS",
+    "image": "Materials/DawnSigil.png",
+    "name": "Dawn Sigil"
+  },
+  "GE": {
+    "id": "GE",
+    "image": "Materials/GoldenEgg.png",
+    "name": "Golden Egg"
+  },
+  "IF": {
+    "id": "IF",
+    "image": "Materials/InfernalFang.png",
+    "name": "Infernal Fang"
+  },
+  "JS": {
+    "id": "JS",
+    "image": "Materials/JadeScarab.png",
+    "name": "Jade Scarab"
+  },
+  "MC": {
+    "id": "MC",
+    "image": "Materials/MoltenCore.png",
+    "name": "Molten Core"
+  },
+  "MG": {
+    "id": "MG",
+    "image": "Materials/MurasaGreatleaf.png",
+    "name": "Murasa Greatleaf"
+  },
+  "SE": {
+    "id": "SE",
+    "image": "Materials/StensiaElixir.png",
+    "name": "Stensia Elixir"
+  },
+  "SS": {
+    "id": "SS",
+    "image": "Materials/SnapperShell.png",
+    "name": "Snapper Shell"
+  },
+  "VL": {
+    "id": "VL",
+    "image": "Materials/VantressLilies.png",
+    "name": "Vantress Lilies"
+  },
+  "GL": {
+    "id": "GL",
+    "image": "Materials/ChromaticGildedLotus.png",
+    "name": "Chromatic Gilded Lotus"
+  }
+}

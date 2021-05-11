@@ -1,0 +1,107 @@
+{
+  "Default": {
+    "id": "Default",
+    "image": "Default.png",
+    "tileImage": "Default.jpg"
+  },
+  "AA": {
+    "id": "AA",
+    "set": "MC",
+    "image": "ViciousMongrel.png",
+    "tileImage": "ViciousMongrel.jpg",
+    "name": "Vicious Mongrel",
+    "cost": 4,
+    "power": 4,
+    "health": 5,
+    "ability": "Haste",
+    "chance": null,
+    "rarity": "Common",
+    "type": "Creature",
+    "subtype": ["Beast"],
+    "artist": "Kudaman",
+    "colour": ["G"],
+    "legendary": false,
+    "collectible": true,
+    "materials": {
+      "GA": 2,
+      "MG": 1,
+      "JS": 1
+    },
+    "mox": "ME"
+  },
+  "AB": {
+    "id": "AB",
+    "set": "MC",
+    "image": "Hellrider.png",
+    "tileImage": "Hellrider.jpg",
+    "name": "Hellrider",
+    "cost": 5,
+    "power": 3,
+    "health": 3,
+    "ability": "Haste Attack: Deal 1 damage to your opponent for each attacker.",
+    "chance": null,
+    "rarity": "Epic",
+    "type": "Creature",
+    "subtype": ["Demon", "Warrior"],
+    "artist": "Aron Elekes",
+    "colour": ["R"],
+    "legendary": false,
+    "collectible": true,
+    "materials": {
+      "BP": 25,
+      "IC": 15,
+      "DH": 10
+    },
+    "mox": "MR"
+  },
+  "AC": {
+    "id": "AC",
+    "set": "MC",
+    "image": "MoltenMonastery.png",
+    "tileImage": "MoltenMonastery.jpg",
+    "name": "Molten Monastery",
+    "cost": null,
+    "power": null,
+    "health": null,
+    "ability": "Starting turn 5, you have a chance to draw an extra card that's discarded if not played this turn instead of getting a mana gem.",
+    "chance": 40,
+    "rarity": "Rare",
+    "type": "Land",
+    "subtype": [],
+    "artist": "Mooncolony",
+    "colour": ["R"],
+    "legendary": false,
+    "collectible": true,
+    "materials": {
+      "MC": 6,
+      "BP": 4,
+      "GH": 2
+    },
+    "mox": "MR"
+  },
+  "AD": {
+    "id": "AD",
+    "set": "MC",
+    "image": "Retaliate.png",
+    "tileImage": "Retaliate.jpg",
+    "name": "Retaliate",
+    "cost": 2,
+    "power": null,
+    "health": null,
+    "ability": "Deal 3 damage to an enemy creature that attacked last turn.",
+    "chance": null,
+    "rarity": "Common",
+    "type": "Spell",
+    "subtype": [],
+    "artist": "Room 8 Studio",
+    "colour": ["W"],
+    "legendary": false,
+    "collectible": true,
+    "materials": {
+      "AF": 2,
+      "LF": 1,
+      "DS": 1
+    },
+    "mox": "MP"
+  }
+}
