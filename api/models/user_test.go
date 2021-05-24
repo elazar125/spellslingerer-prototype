@@ -1,6 +1,7 @@
 package models
 
 import (
+	"api/auth"
 	"api/db"
 
 	"encoding/json"
@@ -9,6 +10,24 @@ import (
 	"github.com/stretchr/testify/assert"
 	"gorm.io/gorm"
 )
+
+// setupDBForUsers sets up the database for use in unit tests
+// TODO: mock the database
+func setupDBForUsers(t *testing.T) error {
+	t.Log("setup database")
+
+	err := db.InitDatabase()
+	if err != nil {
+		t.Error(err)
+	}
+
+	err = db.GlobalDB.AutoMigrate(User{})
+	assert.NoError(t, err)
+	err = db.GlobalDB.AutoMigrate(auth.SignedToken{})
+	assert.NoError(t, err)
+
+	return err
+}
 
 func insertUserInDatabase(t *testing.T, user User) func(t *testing.T) {
 	t.Log("inserting user to database")
@@ -94,7 +113,7 @@ func TestCreateUserRecord(t *testing.T) {
 		Password: "secret",
 	}
 
-	err := SetupDatabase(t)
+	err := setupDBForUsers(t)
 	assert.NoError(t, err)
 
 	err = user.CreateUserRecord()
@@ -120,7 +139,7 @@ func TestDeleteUserRecord(t *testing.T) {
 		Password: "secret",
 	}
 
-	err := SetupDatabase(t)
+	err := setupDBForUsers(t)
 	assert.NoError(t, err)
 
 	err = user.CreateUserRecord()
@@ -146,7 +165,7 @@ func TestUpdateUserRecord(t *testing.T) {
 		Password: "secret",
 	}
 
-	err := SetupDatabase(t)
+	err := setupDBForUsers(t)
 	assert.NoError(t, err)
 
 	err = user.CreateUserRecord()
@@ -198,7 +217,7 @@ func TestLookupByEmail(t *testing.T) {
 		Password: "secret",
 	}
 
-	err := SetupDatabase(t)
+	err := setupDBForUsers(t)
 	assert.NoError(t, err)
 
 	teardown := insertUserInDatabase(t, user)
@@ -217,7 +236,7 @@ func TestHasDuplicate(t *testing.T) {
 		Password: "secret",
 	}
 
-	err := SetupDatabase(t)
+	err := setupDBForUsers(t)
 	assert.NoError(t, err)
 
 	hasDuplicate, err := user.HasDuplicate()

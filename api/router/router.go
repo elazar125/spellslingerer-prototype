@@ -21,6 +21,15 @@ func SetupRouter() *gin.Engine {
 		v1.POST("login", controllers.Login)
 		v1.POST("signup", controllers.Signup)
 
+		v1.GET("types", controllers.GetTypes)
+		v1.GET("subtypes", controllers.GetSubTypes)
+		v1.GET("colours", controllers.GetColours)
+		v1.GET("sets", controllers.GetSets)
+		v1.GET("rarities", controllers.GetRarities)
+		v1.GET("artists", controllers.GetArtists)
+		v1.GET("materials", controllers.GetMaterials)
+		// v1.GET("planeswalkers", controllers.GetPlaneswalkers) TODO: figure out schema for this
+
 		auth := v1.Group("/").Use(auth.EnsureAuthorized())
 		{
 			// account handling, see account.go
