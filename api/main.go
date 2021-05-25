@@ -1,6 +1,7 @@
 package main
 
 import (
+	"api/db"
 	"api/router"
 
 	"log"
@@ -8,7 +9,7 @@ import (
 )
 
 func main() {
-	if err := Migrate(); err != nil {
+	if err := db.Migrate(); err != nil {
 		log.Fatalln(err)
 	}
 

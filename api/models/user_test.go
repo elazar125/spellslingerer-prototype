@@ -1,14 +1,13 @@
 package models
 
 import (
-	"api/auth"
 	"api/db"
 
+	"database/sql"
 	"encoding/json"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-	"gorm.io/gorm"
 )
 
 // setupDBForUsers sets up the database for use in unit tests
@@ -20,11 +19,6 @@ func setupDBForUsers(t *testing.T) error {
 	if err != nil {
 		t.Error(err)
 	}
-
-	err = db.GlobalDB.AutoMigrate(User{})
-	assert.NoError(t, err)
-	err = db.GlobalDB.AutoMigrate(auth.SignedToken{})
-	assert.NoError(t, err)
 
 	return err
 }
@@ -49,7 +43,10 @@ func TestMarshalJSON(t *testing.T) {
 	}
 
 	expected := userMarshalJSON{
-		user.Model,
+		user.ID,
+		user.CreatedAt,
+		user.UpdatedAt,
+		user.DeletedAt,
 		user.Name,
 		user.Email,
 		// Note Password is not included
@@ -73,7 +70,10 @@ func TestUnmarshalJSON(t *testing.T) {
 	}
 
 	toMarshal := userUnmarshalJSON{
-		user.Model,
+		user.ID,
+		user.CreatedAt,
+		user.UpdatedAt,
+		user.DeletedAt,
 		user.Name,
 		user.Email,
 		user.Password,
@@ -86,7 +86,10 @@ func TestUnmarshalJSON(t *testing.T) {
 	err = json.Unmarshal(testBytes, &testUser)
 	assert.NoError(t, err)
 
-	assert.Equal(t, user.Model, testUser.Model)
+	assert.Equal(t, user.ID, testUser.ID)
+	assert.Equal(t, user.CreatedAt, testUser.CreatedAt)
+	assert.Equal(t, user.UpdatedAt, testUser.UpdatedAt)
+	assert.Equal(t, user.DeletedAt, testUser.DeletedAt)
 	assert.Equal(t, user.Name, testUser.Name)
 	assert.Equal(t, user.Email, testUser.Email)
 	assert.NotEqual(t, user.Password, testUser.Password)
@@ -119,11 +122,11 @@ func TestCreateUserRecord(t *testing.T) {
 	err = user.CreateUserRecord()
 	assert.NoError(t, err)
 
-	result := db.GlobalDB.Where("email = ?", user.Email).First(&userResult)
-	assert.NoError(t, result.Error)
+	err = db.GlobalSqlxDB.Get(&userResult, "SELECT * FROM public.users U WHERE U.email = $1 LIMIT 1", user.Email)
+	assert.NoError(t, err)
 
-	result = db.GlobalDB.Unscoped().Where("email = ?", user.Email).Delete(&user)
-	assert.NoError(t, result.Error)
+	_, err = db.GlobalSqlxDB.Exec("DELETE FROM public.users U WHERE U.email = $1", user.Email)
+	assert.NoError(t, err)
 
 	assert.Equal(t, user.Name, userResult.Name)
 	assert.Equal(t, user.Email, userResult.Email)
@@ -145,15 +148,15 @@ func TestDeleteUserRecord(t *testing.T) {
 	err = user.CreateUserRecord()
 	assert.NoError(t, err)
 
-	result := db.GlobalDB.Where("email = ?", user.Email).First(&firstUserResult)
-	assert.NoError(t, result.Error)
+	err = db.GlobalSqlxDB.Get(&firstUserResult, "SELECT * FROM public.users U WHERE U.email = $1 LIMIT 1", user.Email)
+	assert.NoError(t, err)
 
 	err = user.DeleteUserRecord()
 	assert.NoError(t, err)
 
-	result = db.GlobalDB.Where("email = ?", user.Email).First(&secondUserResult)
-	assert.Error(t, result.Error)
-	assert.Equal(t, gorm.ErrRecordNotFound, result.Error)
+	err = db.GlobalSqlxDB.Get(&secondUserResult, "SELECT * FROM public.users U WHERE U.email = $1 LIMIT 1", user.Email)
+	assert.Error(t, err)
+	assert.Equal(t, sql.ErrNoRows, err)
 }
 
 func TestUpdateUserRecord(t *testing.T) {

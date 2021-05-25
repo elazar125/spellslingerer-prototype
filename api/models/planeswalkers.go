@@ -2,15 +2,15 @@ package models
 
 import "api/db"
 
-// Planeswalker represents a deck archetype
+// Planeswalker is used to craft cards
 type Planeswalker struct {
-	Id   int64  `gorm:"primary key"`
-	Name string `gorm:"unique"`
+	ID   int64
+	Name string
 }
 
 // AllPlaneswalkers enumerates all planeswalkers
 func AllPlaneswalkers() ([]Planeswalker, error) {
 	var allPlaneswalkers []Planeswalker
-	result := db.GlobalDB.Find(&allPlaneswalkers)
-	return allPlaneswalkers, result.Error
+	err := db.GlobalSqlxDB.Select(&allPlaneswalkers, "SELECT * FROM public.planeswalkers")
+	return allPlaneswalkers, err
 }

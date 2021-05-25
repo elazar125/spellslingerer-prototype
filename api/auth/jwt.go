@@ -18,7 +18,7 @@ type jwtClaim struct {
 
 // SignedToken represents a signed JWT token
 type SignedToken struct {
-	Token string `gorm:"primaryKey"`
+	Token string
 }
 
 // GetJwtTokenFromAuthHeader takes the authorization header (in the form "Bearer <token>") and extracts the token
@@ -55,8 +55,8 @@ func GenerateJwtToken(email string) (SignedToken, error) {
 
 // Blacklist stores a copy of the token in the database to keep a list of invalid (logged out) tokens
 func (signedToken *SignedToken) Blacklist() error {
-	result := db.GlobalDB.Create(signedToken)
-	return result.Error
+	_, err := db.GlobalSqlxDB.Exec("INSERT INTO public.signed_tokens (token) VALUES ($1)", signedToken.Token)
+	return err
 }
 
 func (signedToken *SignedToken) validate() (*jwtClaim, error) {
@@ -76,11 +76,8 @@ func (signedToken *SignedToken) validate() (*jwtClaim, error) {
 }
 
 func (signedToken *SignedToken) isBlacklisted() (bool, error) {
-	var blacklistedToken SignedToken
-
-	result := db.GlobalDB.Where("Token = ?", signedToken.Token).Find(&blacklistedToken)
-
-	return result.RowsAffected > 0, result.Error
+	result, err := db.GlobalSqlxDB.Query("SELECT * FROM public.signed_tokens ST WHERE ST.token = $1", signedToken.Token)
+	return result.Next(), err
 }
 
 func (signedToken *SignedToken) parse() (*jwt.Token, error) {

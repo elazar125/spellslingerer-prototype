@@ -5,8 +5,9 @@ import (
 	"api/models"
 	"api/rest"
 
+	"database/sql"
+
 	"github.com/gin-gonic/gin"
-	"gorm.io/gorm"
 )
 
 // Signup creates a user in db
@@ -49,7 +50,7 @@ func Login(c *gin.Context) {
 		return
 	}
 
-	if err := user.LookupByEmail(payload.Email); err == gorm.ErrRecordNotFound {
+	if err := user.LookupByEmail(payload.Email); err == sql.ErrNoRows {
 		rest.Unauthorized(c, err, "invalid user credentials")
 		return
 	} else if err != nil {

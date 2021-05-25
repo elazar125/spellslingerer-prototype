@@ -29,6 +29,7 @@ func SetupRouter() *gin.Engine {
 		v1.GET("artists", controllers.GetArtists)
 		v1.GET("materials", controllers.GetMaterials)
 		// v1.GET("planeswalkers", controllers.GetPlaneswalkers) TODO: figure out schema for this
+		v1.GET("cards", controllers.GetCards)
 
 		auth := v1.Group("/").Use(auth.EnsureAuthorized())
 		{
