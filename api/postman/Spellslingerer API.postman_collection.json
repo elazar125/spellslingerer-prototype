@@ -13,7 +13,7 @@
 					"script": {
 						"exec": [
 							"pm.test('response is ok', function () {\r",
-							"    pm.response.to.have.status(200);\r",
+							"    pm.response.to.be.ok;\r",
 							"});\r",
 							""
 						],
@@ -25,11 +25,10 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "localhost:8080/ping",
+					"raw": "{{url}}/ping",
 					"host": [
-						"localhost"
+						"{{url}}"
 					],
-					"port": "8080",
 					"path": [
 						"ping"
 					]
@@ -45,7 +44,7 @@
 					"script": {
 						"exec": [
 							"pm.test('response is badrequest', function () {\r",
-							"    pm.response.to.have.status(400);\r",
+							"    pm.response.to.be.badRequest;\r",
 							"});\r",
 							"\r",
 							"pm.test('message is invalid json', function () {\r",
@@ -70,11 +69,10 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:8080/v1/signup",
+					"raw": "{{url}}/v1/signup",
 					"host": [
-						"localhost"
+						"{{url}}"
 					],
-					"port": "8080",
 					"path": [
 						"v1",
 						"signup"
@@ -91,7 +89,7 @@
 					"script": {
 						"exec": [
 							"pm.test('response is ok', function () {\r",
-							"    pm.response.to.have.status(200);\r",
+							"    pm.response.to.be.ok;\r",
 							"});\r",
 							""
 						],
@@ -112,11 +110,10 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:8080/v1/signup",
+					"raw": "{{url}}/v1/signup",
 					"host": [
-						"localhost"
+						"{{url}}"
 					],
-					"port": "8080",
 					"path": [
 						"v1",
 						"signup"
@@ -133,7 +130,7 @@
 					"script": {
 						"exec": [
 							"pm.test('response is badrequest', function () {\r",
-							"    pm.response.to.have.status(400);\r",
+							"    pm.response.to.be.badRequest;\r",
 							"});\r",
 							"\r",
 							"pm.test('message is duplicate user', function () {\r",
@@ -158,11 +155,10 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:8080/v1/signup",
+					"raw": "{{url}}/v1/signup",
 					"host": [
-						"localhost"
+						"{{url}}"
 					],
-					"port": "8080",
 					"path": [
 						"v1",
 						"signup"
@@ -179,7 +175,7 @@
 					"script": {
 						"exec": [
 							"pm.test('response is unauthorized', function () {\r",
-							"    pm.response.to.have.status(401);\r",
+							"    pm.response.to.be.unauthorized;\r",
 							"});\r",
 							"\r",
 							"pm.test('message is invalid credentials', function () {\r",
@@ -204,11 +200,10 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:8080/v1/login",
+					"raw": "{{url}}/v1/login",
 					"host": [
-						"localhost"
+						"{{url}}"
 					],
-					"port": "8080",
 					"path": [
 						"v1",
 						"login"
@@ -225,7 +220,7 @@
 					"script": {
 						"exec": [
 							"pm.test('response is unauthorized', function () {\r",
-							"    pm.response.to.have.status(401);\r",
+							"    pm.response.to.be.unauthorized;\r",
 							"});\r",
 							"\r",
 							"pm.test('message is invalid credentials', function () {\r",
@@ -250,11 +245,10 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:8080/v1/login",
+					"raw": "{{url}}/v1/login",
 					"host": [
-						"localhost"
+						"{{url}}"
 					],
-					"port": "8080",
 					"path": [
 						"v1",
 						"login"
@@ -271,7 +265,7 @@
 					"script": {
 						"exec": [
 							"pm.test('response is ok', function () {\r",
-							"    pm.response.to.have.status(200);\r",
+							"    pm.response.to.be.ok;\r",
 							"});\r",
 							"\r",
 							"pm.collectionVariables.set('token', pm.response.json()[\"Token\"])"
@@ -293,11 +287,10 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:8080/v1/login",
+					"raw": "{{url}}/v1/login",
 					"host": [
-						"localhost"
+						"{{url}}"
 					],
-					"port": "8080",
 					"path": [
 						"v1",
 						"login"
@@ -314,7 +307,7 @@
 					"script": {
 						"exec": [
 							"pm.test('response is ok', function () {\r",
-							"    pm.response.to.have.status(200);\r",
+							"    pm.response.to.be.ok;\r",
 							"});\r",
 							""
 						],
@@ -332,11 +325,10 @@
 					}
 				],
 				"url": {
-					"raw": "localhost:8080/v1/profile",
+					"raw": "{{url}}/v1/profile",
 					"host": [
-						"localhost"
+						"{{url}}"
 					],
-					"port": "8080",
 					"path": [
 						"v1",
 						"profile"
@@ -353,7 +345,7 @@
 					"script": {
 						"exec": [
 							"pm.test('response is badrequest', function () {\r",
-							"    pm.response.to.have.status(400);\r",
+							"    pm.response.to.be.badRequest;\r",
 							"});\r",
 							"\r",
 							"pm.test('message is invalid json', function () {\r",
@@ -384,11 +376,10 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:8080/v1/profile",
+					"raw": "{{url}}/v1/profile",
 					"host": [
-						"localhost"
+						"{{url}}"
 					],
-					"port": "8080",
 					"path": [
 						"v1",
 						"profile"
@@ -405,7 +396,7 @@
 					"script": {
 						"exec": [
 							"pm.test('response is ok', function () {\r",
-							"    pm.response.to.have.status(200);\r",
+							"    pm.response.to.be.ok;\r",
 							"});\r",
 							"\r",
 							"pm.collectionVariables.set('token', pm.response.json()[\"Token\"])\r",
@@ -434,11 +425,10 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:8080/v1/profile",
+					"raw": "{{url}}/v1/profile",
 					"host": [
-						"localhost"
+						"{{url}}"
 					],
-					"port": "8080",
 					"path": [
 						"v1",
 						"profile"
@@ -455,7 +445,7 @@
 					"script": {
 						"exec": [
 							"pm.test('response is ok', function () {\r",
-							"    pm.response.to.have.status(200);\r",
+							"    pm.response.to.be.ok;\r",
 							"});\r",
 							""
 						],
@@ -473,11 +463,10 @@
 					}
 				],
 				"url": {
-					"raw": "localhost:8080/v1/profile",
+					"raw": "{{url}}/v1/profile",
 					"host": [
-						"localhost"
+						"{{url}}"
 					],
-					"port": "8080",
 					"path": [
 						"v1",
 						"profile"
@@ -494,7 +483,7 @@
 					"script": {
 						"exec": [
 							"pm.test('response is ok', function () {\r",
-							"    pm.response.to.have.status(200);\r",
+							"    pm.response.to.be.ok;\r",
 							"});\r",
 							""
 						],
@@ -521,11 +510,10 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:8080/v1/logout",
+					"raw": "{{url}}/v1/logout",
 					"host": [
-						"localhost"
+						"{{url}}"
 					],
-					"port": "8080",
 					"path": [
 						"v1",
 						"logout"
@@ -542,7 +530,7 @@
 					"script": {
 						"exec": [
 							"pm.test('response is unauthorized', function () {\r",
-							"    pm.response.to.have.status(401);\r",
+							"    pm.response.to.be.unauthorized;\r",
 							"});\r",
 							"\r",
 							"pm.test('message is invalid credentials', function () {\r",
@@ -567,11 +555,10 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:8080/v1/login",
+					"raw": "{{url}}/v1/login",
 					"host": [
-						"localhost"
+						"{{url}}"
 					],
-					"port": "8080",
 					"path": [
 						"v1",
 						"login"
@@ -588,7 +575,7 @@
 					"script": {
 						"exec": [
 							"pm.test('response is ok', function () {\r",
-							"    pm.response.to.have.status(200);\r",
+							"    pm.response.to.be.ok;\r",
 							"});\r",
 							"\r",
 							"pm.collectionVariables.set('token', pm.response.json()[\"Token\"])"
@@ -610,11 +597,10 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:8080/v1/login",
+					"raw": "{{url}}/v1/login",
 					"host": [
-						"localhost"
+						"{{url}}"
 					],
-					"port": "8080",
 					"path": [
 						"v1",
 						"login"
@@ -631,7 +617,7 @@
 					"script": {
 						"exec": [
 							"pm.test('response is ok', function () {\r",
-							"    pm.response.to.have.status(200);\r",
+							"    pm.response.to.be.ok;\r",
 							"});"
 						],
 						"type": "text/javascript"
@@ -648,11 +634,10 @@
 					}
 				],
 				"url": {
-					"raw": "localhost:8080/v1/profile",
+					"raw": "{{url}}/v1/profile",
 					"host": [
-						"localhost"
+						"{{url}}"
 					],
-					"port": "8080",
 					"path": [
 						"v1",
 						"profile"
@@ -669,7 +654,7 @@
 					"script": {
 						"exec": [
 							"pm.test('response is unauthorized', function () {\r",
-							"    pm.response.to.have.status(401);\r",
+							"    pm.response.to.be.unauthorized;\r",
 							"});"
 						],
 						"type": "text/javascript"
@@ -686,11 +671,10 @@
 					}
 				],
 				"url": {
-					"raw": "localhost:8080/v1/profile",
+					"raw": "{{url}}/v1/profile",
 					"host": [
-						"localhost"
+						"{{url}}"
 					],
-					"port": "8080",
 					"path": [
 						"v1",
 						"profile"
@@ -707,7 +691,7 @@
 					"script": {
 						"exec": [
 							"pm.test('response is unauthorized', function () {\r",
-							"    pm.response.to.have.status(401);\r",
+							"    pm.response.to.be.unauthorized;\r",
 							"});\r",
 							"\r",
 							"pm.test('message is invalid credentials', function () {\r",
@@ -732,14 +716,265 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:8080/v1/login",
+					"raw": "{{url}}/v1/login",
 					"host": [
-						"localhost"
+						"{{url}}"
 					],
-					"port": "8080",
 					"path": [
 						"v1",
 						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Artists",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('response is ok', function () {\r",
+							"    pm.response.to.be.ok;\r",
+							"});\r",
+							"\r",
+							"pm.test('response has expected content', function () {\r",
+							"    pm.expect(pm.response.json().length).to.equal(41)\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/v1/artists",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"v1",
+						"artists"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Subtypes",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('response is ok', function () {\r",
+							"    pm.response.to.be.ok;\r",
+							"});\r",
+							"\r",
+							"pm.test('response has expected content', function () {\r",
+							"    pm.expect(pm.response.json().length).to.equal(36)\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/v1/subtypes",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"v1",
+						"subtypes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Sets",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('response is ok', function () {\r",
+							"    pm.response.to.be.ok;\r",
+							"});\r",
+							"\r",
+							"pm.test('response has expected content', function () {\r",
+							"    pm.expect(pm.response.json().length).to.equal(17)\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/v1/sets",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"v1",
+						"sets"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Types",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('response is ok', function () {\r",
+							"    pm.response.to.be.ok;\r",
+							"});\r",
+							"\r",
+							"pm.test('response has expected content', function () {\r",
+							"    pm.expect(pm.response.json().length).to.equal(5)\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/v1/types",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"v1",
+						"types"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Colours",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('response is ok', function () {\r",
+							"    pm.response.to.be.ok;\r",
+							"});\r",
+							"\r",
+							"pm.test('response has expected content', function () {\r",
+							"    pm.expect(pm.response.json().length).to.equal(6)\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/v1/colours",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"v1",
+						"colours"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Materials",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('response is ok', function () {\r",
+							"    pm.response.to.be.ok;\r",
+							"});\r",
+							"\r",
+							"pm.test('response has expected content', function () {\r",
+							"    pm.expect(pm.response.json().length).to.equal(19)\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/v1/materials",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"v1",
+						"materials"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Rarities",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('response is ok', function () {\r",
+							"    pm.response.to.be.ok;\r",
+							"});\r",
+							"\r",
+							"pm.test('response has expected content', function () {\r",
+							"    pm.expect(pm.response.json().length).to.equal(6)\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/v1/rarities",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"v1",
+						"rarities"
 					]
 				}
 			},
@@ -770,6 +1005,10 @@
 		{
 			"key": "token",
 			"value": "test"
+		},
+		{
+			"key": "url",
+			"value": "http://localhost:8080"
 		}
 	]
 }
