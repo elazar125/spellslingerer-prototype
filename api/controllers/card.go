@@ -9,7 +9,7 @@ import (
 
 // GetCards enumerates all cards
 func GetCards(c *gin.Context) {
-	if cards, err := models.AllCards(); err != nil {
+	if cards, err := models.AllCards(c.Request.URL.Query()); err != nil {
 		rest.ServerError(c, err, "error loading cards")
 	} else {
 		rest.Ok(c, cards)

@@ -2,6 +2,8 @@ package models
 
 import (
 	"api/db"
+	"api/filter"
+	"net/url"
 
 	"database/sql"
 )
@@ -27,8 +29,28 @@ type Card struct {
 	Mox         Material      `db:"mox"`
 }
 
-// AllCards enumerates all artists
-func AllCards() ([]Card, error) {
+// CardFilter foo
+type CardFilter struct {
+	Name       string `filter-alias:"C" filter-column-name:"name"`
+	SetID      int    `filter-alias:"C" filter-column-name:"set_id"`
+	Cost       int    `filter-alias:"C" filter-column-name:"cost"`
+	Power      int    `filter-alias:"C" filter-column-name:"power"`
+	Health     int    `filter-alias:"C" filter-column-name:"health"`
+	Ability    string `filter-alias:"C" filter-column-name:"ability"`
+	Chance     int    `filter-alias:"C" filter-column-name:"chance"`
+	RarityID   int    `filter-alias:"C" filter-column-name:"rarity_id"`
+	CardTypeID int    `filter-alias:"C" filter-column-name:"card_type_id"`
+	// SubType     []SubType `filter-alias:"C" filter-column-name:"sub_type_id"`
+	ArtistID int `filter-alias:"C" filter-column-name:"artist_id"`
+	// Colour      []Colour `filter-alias:"C" filter-column-name:"colour_id"`
+	Legendary   bool `filter-alias:"C" filter-column-name:"legendary"`
+	Collectible bool `filter-alias:"C" filter-column-name:"collectible"`
+	MaterialID  int  `filter-alias:"C" filter-column-name:"material_id"`
+	MoxID       int  `filter-alias:"C" filter-column-name:"mox_id"`
+}
+
+// AllCards enumerates all artists, using filters specified in the request
+func AllCards(queryParams url.Values) ([]Card, error) {
 	cardSql := `
 		SELECT
 			C.id,
@@ -81,8 +103,13 @@ func AllCards() ([]Card, error) {
 		WHERE CA.id = $1
 	`
 
+	whereClause, args, err := filter.BuildWhereClauseFromQuery(queryParams, CardFilter{})
+	if err != nil {
+		return nil, err
+	}
+
 	var allCards []Card
-	err := db.GlobalSqlxDB.Select(&allCards, cardSql)
+	err = db.GlobalSqlxDB.Select(&allCards, cardSql+whereClause, args...)
 	if err != nil {
 		return nil, err
 	}
